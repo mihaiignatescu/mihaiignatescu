@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Propunere reper inaltime</title>
+    <link rel="stylesheet" href="ANALIZA_PROPUNERE.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .center-text {
+            text-align: center;
+            margin: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 5px 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="center-text">GENERAREA PARAMETRILOR - REPERUL DE INALTIME</div>
+    <div class="fixed-window">
+        <img src="0_EXEMPLU.jpg" alt="A descriptive alternative text">
+    </div>
+    <div>
+        <input id="LxA" type="number" placeholder="Latura cladirii analizate pe axa X">
+    </div>
+    <div>
+        <input id="LyA" type="number" placeholder="Latura cladirii analizate pe axa Y">
+    </div>
+    <div>
+        <button id="C1_evaluateButton">Criteriul 1 - dimensiuni preliminare:</button>
+    </div>
+    <div id="C1_outputArea"></div>
+    <div>
+        <input id="HB" type="number" placeholder="Inaltimea cladirii vecine">
+    </div>
+    <div>
+        <button id="C2_evaluateButton">Criteriul 2 - parametri de baza:</button>
+    </div>
+    <div id="C2_outputArea"></div>
+    <div>
+        <input id="DR" type="number" placeholder="Distanta dintre cladiri">
+    </div>
+    <div>
+        <button id="C3_evaluateButton">Criteriul 3 - parametri relativi:</button>
+    </div>
+    <div id="C3_outputArea"></div>
+    <div>
+        <input id="HA" type="number" placeholder="Inaltimea cladirii analizate">
+    </div>
+    <div>
+        <button id="C4_evaluateButton">Criteriul 4 - distanța de percepție vizuală:</button>
+    </div>
+    <div id="C4_outputArea"></div>
+    <div>
+        <button id="C5_evaluateButton">Verificarea parametrilor:</button>
+    </div>
+    <div id="C5_outputArea"></div>
+    <script src="PROPUNERE_RH_JAVASCRIPT.js"></script>
+    <button onclick="window.location.href='analiza.html'">Analiza</button>
+    <button onclick="window.location.href='index.html'">Return to Main Page</button>
+</body>
+</html>
