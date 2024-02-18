@@ -27,114 +27,18 @@
     </style>
 </head>
 <body>
-    <button onclick="window.location.href='analiza.html'">Analiza</button>
-    <button onclick="window.location.href='propunere.html'">Propunere</button>
-    <div id="model-container"></div>
-    <input type="number" id="heightInput" placeholder="Coming soon" />
-    <button id="enterButton">Enter</button>
-    <button id="Buton_vedere_in_plan">Vedere in plan</button>
-    <button id="Buton_vedere_frontala">Vedere frontala</button>
-    <button id="Buton_vedere_laterala">Vedere laterala</button>
-    <button id="Buton_vedere_axonometrie">Vedere in axonometrie</button>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/build/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/examples/js/controls/OrbitControls.js"></script>
-    <script>
-        var scene = new THREE.Scene();
-        // Define the boundaries of the orthographic view
-        var frustumSize = 75;
-        var aspect = 600 / 400;
-        var camera = new THREE.OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, 1, 2000);
-        // Set the camera position
-        camera.position.set(0, 0, 0); // These values can be adjusted based on your scene
-        camera.lookAt(scene.position); // Assuming you have a variable `scene` representing your Three.js scene
-
-        // var camera = new THREE.PerspectiveCamera(75, 600 / 400, 0.1, 1000);
-        var renderer = new THREE.WebGLRenderer();
-        renderer.setSize(600, 400);
-        document.getElementById('model-container').appendChild(renderer.domElement);
-
-        var controls = new THREE.OrbitControls(camera, renderer.domElement);
-        camera.position.set(0, 0, 5);
-
-        var ambientLight = new THREE.AmbientLight(0xcccccc, 1);
-        scene.add(ambientLight);
-        var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
-        directionalLight.position.set(1, 1, 1);
-        scene.add(directionalLight);
-
-        var volumeHeight = 1; // Default height
-        var volumeObject; // This will reference the specific object in the .glTF scene
-
-        document.getElementById('Buton_vedere_in_plan').addEventListener('click', function() {
-            camera.position.set(0, 0, 40); // Adjust to your desired new camera position
-            camera.lookAt(scene.position); // Make the camera look at the center of the scene
-            controls.update(); // Update the controls if necessary
-        });
-
-        document.getElementById('Buton_vedere_frontala').addEventListener('click', function() {
-            camera.position.set(40, 0, 0); // Adjust to your desired new camera position
-            camera.lookAt(scene.position); // Make the camera look at the center of the scene
-            controls.update(); // Update the controls if necessary
-        });
-
-        document.getElementById('Buton_vedere_laterala').addEventListener('click', function() {
-            camera.position.set(0, 40, 0); // Adjust to your desired new camera position
-            camera.lookAt(scene.position); // Make the camera look at the center of the scene
-            controls.update(); // Update the controls if necessary
-        });
-
-        document.getElementById('Buton_vedere_axonometrie').addEventListener('click', function() {
-            camera.position.set(40, 40, 40); // Adjust to your desired new camera position
-            camera.lookAt(scene.position); // Make the camera look at the center of the scene
-            controls.update(); // Update the controls if necessary
-        });
-
-        // Function to update the height of the volume
-        function updateHeight(newHeight) {
-            if (volumeObject) {
-                volumeObject.scale.setZ(newHeight / volumeHeight);
-                volumeHeight = newHeight; // Update the current height
-            }
-        }
-
-        // GLTF Loader to load the 3D model
-        var loader = new THREE.GLTFLoader();
-        loader.load(
-            'mymodel.gltf', // Update this with the actual path to the .glTF model
-            function (gltf) {
-                scene.add(gltf.scene);
-                // Assuming 'volumeName' is the name of the object in Blender or any 3D software you used to create the model
-                volumeObject = gltf.scene.getObjectByName('RH');
-                // Set initial scale based on the current model's height
-                volumeHeight = volumeObject.scale.z;
-
-                // Event listener for the height input field
-                document.getElementById('heightInput').addEventListener('input', function(event) {
-                    var newHeight = parseFloat(event.target.value);
-                    updateHeight(newHeight);
-                });
-            },
-            undefined,
-            function (error) {
-                console.error('An error happened', error);
-            }
-        );
-
-        function animate() {
-            requestAnimationFrame(animate);
-            controls.update();
-            renderer.render(scene, camera);
-        }
-        animate();
-
-        document.getElementById('enterButton').addEventListener('click', function() {
-    var newHeight = parseFloat(document.getElementById('heightInput').value);
-    if(!isNaN(newHeight)) { // Only call updateHeight if newHeight is a number
-        updateHeight(newHeight);
-    }
-});
-
-    </script>
+    <div class="content-container">
+        <p id="titlu_disertatie">MODEL MATEMATIC PENTRU PARAMETRIZAREA EFECTELOR COMPOZITIONALE IN PROIECTAREA ZONELOR DE BIROURI</p>
+        <p id="descriere">Acesta este o aplicatie care ajuta la definirea parametrilor pentru elementele de compozitie in scopul indeplinirii efectelor compozitionale
+        </br>Aplicatia are doua componente:
+        </br>1. verifica parametri cladirilor existente si determina daca se indeplinesc efectele compozitionale (acceseaza butonul "analiza")
+        </br>2. genereaza parametri pentru cladirile propuse in relatie cu cele existente pentru a indeplini efectele compozitionale (acceseaza butonul "propunere")
+        </p>
+        <button onclick="window.location.href='analiza.html'">Analiza</button>
+        <button onclick="window.location.href='propunere.html'">Propunere</button>
+        <p id="disclaimer">disclaimer: aplicatia este in stadiu de draft, sunt rezolvate majoritatea functionalitarilor aplicatiei si modelul 3D cu propunerea din semestrul trecut este integrat, insa nu este facuta legatura dintre valorile introduse si modelul 3D pentru vizualizare in timp real.
+        Exista probleme la logica matematica in special la partea de analiza din cauza trecerii codului prin diferite limbaje de programare. Pot exista intervale generate cu valori negative, acestea vor fi rezolvate in viitor.
+        </p>
+    </div>
 </body>
 </html>
