@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analiza reper inaltime</title>
+    <link rel="stylesheet" href="ANALIZA_PROPUNERE.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .center-text {
+            text-align: center;
+            margin: 20px;
+        }
+        button {
+            margin: 10px;
+            padding: 5px 15px;
+        }
+    </style>
+</head>
+<body>
+    <!-- REFERINTE -->
+    <script src="ANALIZA_RH_JAVASCRIPT.js"></script>
+    <div class="bottom-left-buttons">
+        <button onclick="window.location.href='propunere.html'">Viziteaza pagina de propunere</button>
+        <button onclick="window.location.href='index.html'">Intoarce-te la pagina principala</button>
+    </div>
+
+    <div class="layout-container">
+        <div class="fields-container">
+            <div class="form-content">
+                <h1>ANALIZA REPERULUI DE INALTIME</h1>
+                <!-- Place existing fields and buttons here -->
+                    <!-- FIELDS -->
+                <fieldset>
+                    <div>
+                        <input id="HA" type="number" placeholder="Inaltimea cladirii analizate">
+                    </div>
+                    <div>
+                        <input id="LxA" type="number" placeholder="Latura cladirii analizate pe axa X">
+                    </div>
+                    <div>
+                        <input id="LyA" type="number" placeholder="Latura cladirii analizate pe axa Y">
+                    </div>
+                    <div>
+                        <input id="HB" type="number" placeholder="Inaltimea cladirii vecine">
+                    </div>
+                    <div>
+                        <input id="DR" type="number" placeholder="Distanta dintre cladiri">
+                    </div>
+                </fieldset>
+                <!-- BUTOANE -->
+                <fieldset>
+                    <div>
+                        <button id="C1_evaluateButton">Criteriul 1 - dimensiuni preliminare:</button>
+                    </div>
+                    <div id="C1_outputArea"></div>
+                    <div id="text_ajutator">completeaza valorile: Inaltimea cladrii analizate, Latura cladirii analizate pe axa X si Latura cladirii analizate pe axa Y</div>
+                    <div>
+                        <button id="C2_evaluateButton">Criteriul 2 - parametri de baza:</button>
+                    </div>
+                    <div id="C2_outputArea"></div>
+                    <div id="text_ajutator">completeaza valorile: Inaltimea cladirii analizate si Inaltimea cladirii vecine</div>
+                    <div>
+                        <button id="C3_evaluateButton">Criteriul 3 - parametri relativi:</button>
+                    </div>
+                    <div id="C3_outputArea"></div>
+                    <div id="text_ajutator">completeaza valorile: Inaltimea cladirii analizate, Inaltimea cladirii vecine si Distanta dintre cladiri</div>
+                    <div>
+                        <button id="C4_evaluateButton">Criteriul 4 - distanța de percepție vizuală:</button>
+                    </div>
+                    <div id="C4_outputArea"></div>
+                    <div id="text_ajutator">completeaza valorile: Inaltimea cladirii analizate, Inaltimea cladirii vecine si Distanta dintre cladiri</div>
+                    <div>
+                        <button id="C5_evaluateButton">Generarea parametrilor:</button>
+                    </div>
+                    <div id="C5_outputArea"></div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="images-container">
+            <img src="RH.jpg" alt="A descriptive alternative text">
+        </div>
+        <div class="render-window">
+    <!-- // MODEL 3D -->
+    <div id="model-container"></div>
+    <!-- <input type="number" id="heightInput" placeholder="Coming soon" /> -->
+    <div id="buttons-container">
+        <button id="Buton_toggle">orbit</button>
+        <button id="Buton_vedere_in_plan">plan</button>
+        <button id="Buton_vedere_frontala_nord">nord</button>
+        <button id="Buton_vedere_laterala_vest">vest</button>
+        <button id="Buton_vedere_laterala_sud">sud</button>
+        <button id="Buton_vedere_laterala_est">est</button>
+        <button id="Buton_vedere_axonometrie_45">iso_45</button>
+        <button id="Buton_vedere_axonometrie_90">iso_90</button>
+    </div>    
+    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/examples/js/controls/OrbitControls.js"></script>
+    
+    <script>
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff); // Set the background to black
+        //scene.add(new THREE.AxesHelper(5)); // Visualize orientation
+    
+        var container = document.getElementById('model-container');
+        var width = container.offsetWidth; // Use container's width
+        var height = container.offsetHeight; // Use container's height
+        var aspect = width / height;
+    
+        var frustumSize = 115;
+        var orthographicCamera = new THREE.OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, -100, 2000);
+        orthographicCamera.position.set(0, 0, 50);
+    
+        var perspectiveCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        perspectiveCamera.position.set(0, 0, 50);
+    
+        var camera = perspectiveCamera; // Start with the perspective camera
+    
+        var renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setSize(width, height);
+        renderer.setClearColor(0xffffff, 1); // Ensure the renderer clears to black
+        container.appendChild(renderer.domElement); // Ensure renderer matches container size
+    
+        renderer.shadowMap.enabled = true; // Adjust based on your needs
+    
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enabled = true;
+    
+        var ambientLight = new THREE.AmbientLight(0xcccccc, 1);
+        scene.add(ambientLight);
+    
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        directionalLight.position.set(30, 30, 30);
+        directionalLight.castShadow = true;
+        scene.add(directionalLight);
+    
+        // Update camera aspect ratios and projection matrices
+        orthographicCamera.aspect = aspect;
+        orthographicCamera.updateProjectionMatrix();
+        perspectiveCamera.aspect = aspect;
+        perspectiveCamera.updateProjectionMatrix();
+    
+        var volumeHeight = 1; // Default height
+        var volumeObject; // This will reference the specific object in the .glTF scene
+    
+        function zoomOutOrthographic(camera, zoomFactor) {
+            camera.zoom = zoomFactor;
+            camera.updateProjectionMatrix();
+        }
+    
+        document.getElementById('Buton_toggle').addEventListener('click', function() {
+            // Switch to perspective camera and enable controls for orbiting
+            camera = perspectiveCamera;
+            controls = new THREE.OrbitControls(perspectiveCamera, renderer.domElement);
+            controls.enabled = true;
+            animate();
+        });
+    
+        function setFixedView(position, lookAtPosition, upDirection = {x: 0, y: 1, z: 0}) {
+            camera = orthographicCamera; // Switch to orthographic camera for fixed views
+            camera.position.set(position.x, position.y, position.z);
+            camera.lookAt(lookAtPosition.x, lookAtPosition.y, lookAtPosition.z);
+            camera.up.set(upDirection.x, upDirection.y, upDirection.z); // Set the camera's up direction
+            camera.updateProjectionMatrix(); // Important after changing camera properties
+            controls.dispose(); // Dispose current controls
+            controls = new THREE.OrbitControls(orthographicCamera, renderer.domElement); // Reinitialize controls for the orthographic camera
+            controls.enabled = false; // Disable controls to prevent orbiting in fixed views
+            animate();
+        }
+    
+        document.getElementById('Buton_vedere_in_plan').addEventListener('click', function() {
+            setFixedView({x: 0, y: 0, z: 0}, scene.position, {x: 0, y: 1, z: 0});
+        });
+    
+        document.getElementById('Buton_vedere_frontala_nord').addEventListener('click', function() {
+            setFixedView({x: 0, y: 90, z: 0}, scene.position, {x: 0, y: 0, z: 1});
+        });
+    
+        document.getElementById('Buton_vedere_laterala_vest').addEventListener('click', function() {
+            setFixedView({x: -90, y: 0, z: 0}, scene.position, {x: 1, y: 0, z: 0});
+        });
+    
+        document.getElementById('Buton_vedere_laterala_sud').addEventListener('click', function() {
+            setFixedView({x: 0, y: -90, z: 0}, scene.position, {x: 0, y: 1, z: 0});
+        });
+    
+        document.getElementById('Buton_vedere_laterala_est').addEventListener('click', function() {
+            setFixedView({x: 90, y: 0, z: 0}, scene.position, {x: 0, y: 0, z: 1});
+        });
+    
+        document.getElementById('Buton_vedere_axonometrie_45').addEventListener('click', function() {
+            setFixedView({x: 30, y: 30, z: 30}, scene.position, {x: 0, y: 0, z: 1});
+        });
+    
+        document.getElementById('Buton_vedere_axonometrie_90').addEventListener('click', function() {
+            setFixedView({x: 100, y: 100, z: 100*Math.sqrt(3)}, scene.position, {x: 0, y: 0, z: 1});
+        });
+    
+        // Function to update the height of the volume
+        function updateHeight(newHeight) {
+            if (volumeObject) {
+                volumeObject.scale.setZ(newHeight / volumeHeight);
+                volumeHeight = newHeight; // Update the current height
+            }
+        }
+    
+        // GLTF Loader to load the 3D model
+        var loader = new THREE.GLTFLoader();
+        loader.load(
+            'mymodel2.gltf', // Update this with the actual path to the .glTF model
+            function (gltf) {
+                scene.add(gltf.scene);
+                // Assuming 'volumeName' is the name of the object in Blender or any 3D software you used to create the model
+                volumeObject = gltf.scene.getObjectByName('RH');
+                // Set initial scale based on the current model's height
+                volumeHeight = volumeObject.scale.z;
+    
+                // Event listener for the height input field
+                document.getElementById('heightInput').addEventListener('input', function(event) {
+                    var newHeight = parseFloat(event.target.value);
+                    updateHeight(newHeight);
+                });
+            },
+            undefined,
+            function (error) {
+                console.error('An error happened', error);
+            }
+        );
+    
+        var loader = new THREE.GLTFLoader();
+        loader.load(
+            'mymodel2.gltf', // Make sure this points to the correct path of your model
+            function (gltf) {
+                scene.add(gltf.scene); // Add the loaded model to the scene
+                
+                // Traverse the scene and adjust materials of all meshes
+                gltf.scene.traverse(function (object) {
+                    if (object.isMesh) {
+                        // Assuming you want to change the color to a visible gray
+                        // This checks if the material is an array of materials or a single material
+                        if (Array.isArray(object.material)) {
+                            object.material.forEach((mat) => {
+                                mat.color.set(0x787878); // Change to gray
+                                mat.needsUpdate = true;
+                            });
+                        } else {
+                            object.material.color.set(0x787878); // Change to gray
+                            object.material.needsUpdate = true;
+                        }
+                        
+                        // Enable shadows for better visualization
+                        object.castShadow = true;
+                        object.receiveShadow = true;
+                    }
+                });
+        
+            // Other settings for your model
+        }, undefined, function (error) {
+            console.error('An error happened', error);
+        });
+    
+        var ground = new THREE.Mesh(
+            new THREE.PlaneGeometry(2000, 2000),
+            new THREE.MeshPhongMaterial({ color: 0x999999, depthWrite: false })
+        );
+        ground.rotation.x = -Math.PI / 2;
+        ground.receiveShadow = true;
+        scene.add(ground);
+    
+    
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera); // Use the active camera
+        }
+        animate();
+    
+    
+        document.getElementById('enterButton').addEventListener('click', function() {
+            var newHeight = parseFloat(document.getElementById('heightInput').value);
+            if(!isNaN(newHeight)) { // Only call updateHeight if newHeight is a number
+            updateHeight(newHeight);
+        }
+    });
+        </script>
+        </div>
+</body>
+</html>

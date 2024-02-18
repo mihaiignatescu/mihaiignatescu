@@ -1,0 +1,108 @@
+/* style.css */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: left;
+    align-items: left;
+    height: 100vh;
+    background-color: #ffffff;
+}
+
+.content-container {
+    width: 30%;
+    max-width: 30%; /* Ensures the container does not exceed 30% of the page width */
+    text-align: center; /* Centers text within the container */
+    display: flex;
+    flex-direction: column; /* Aligns items in a column */
+    justify-content: center; /* Vertically centers items for flex-direction: column */
+    align-items: center; /* Horizontally centers items */
+    padding: 20px; /* Adds some padding inside the container */
+    box-sizing: border-box; /* Includes padding in the element's total dimensions */
+}
+
+#titlu_disertatie {
+    font-size: 40px; /* Sets the font size */
+    color: rgb(0, 0, 0); /* Sets the text color */
+    font-weight: bold; /* Makes the text bold */
+}
+
+#descriere {
+    font-size: 18px; /* Sets the font size */
+    color: rgb(0, 0, 0); /* Sets the text color */
+    font-weight: normal; /* Makes the text bold */
+    align-content: left;
+}
+
+#disclaimer {
+    font-size: 14px; /* Sets the font size */
+    color: rgb(0, 0, 0); /* Sets the text color */
+    font-weight: normal; /* Makes the text bold */
+    align-content: left;
+}
+
+button {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 5px 50px;
+    margin: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.Buton_vedere_in_plan {
+    background-color: #000000;
+    color: rgb(255, 255, 255);
+    border: none;
+    padding: 5px 5px;
+    margin: 10px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    top: 0px;
+    right: 0px;
+
+}
+
+button:hover {
+    background-color: #5e5e5e;
+}
+
+.center-text {
+    text-align: center;
+    margin: 10px;
+}
+
+.fixed-window {
+    position: fixed; /* Keeps the window fixed during scrolling */
+    top: 50px; /* Distance from the top of the viewport */
+    right: 50px; /* Distance from the right of the viewport */
+    width: 200px; /* Set the width of the fixed window */
+    height: 300px; /* Set the height of the fixed window */
+    border: 2px solid #ffffff; /* Optional: adds a border around the window */
+    overflow: hidden; /* Ensures the content does not spill out of the window */
+    padding: 15px; /* Optional: adds some space inside the window */
+    background-color: #d8d8d8; /* Optional: background color */
+}
+
+.fixed-window img {
+    width: 100%; /* Makes the image fully occupy the fixed window's width */
+    height: auto; /* Keeps the image aspect ratio intact */
+}
+
+.content {
+    margin-top: 350px; /* Just to demonstrate scrolling, adjust as needed */
+}
+
+#model-container {
+    width: 853px; /* One-third of 2560px screen width */
+    height: 1440px; /* Full height for a 1440px screen height */
+    margin: auto;
+    position: fixed;
+    top: 0px; /* Align to the top */
+    right: 50px; /* Align to the right */
+}
+
