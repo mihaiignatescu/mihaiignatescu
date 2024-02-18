@@ -1,0 +1,58 @@
+/* style.css */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f0f0f0;
+}
+
+button {
+    background-color: #007bff;
+    color: rgb(18, 224, 207);
+    border: none;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.center-text {
+    text-align: center;
+    margin: 20px;
+}
+
+.fixed-window {
+    position: fixed; /* Keeps the window fixed during scrolling */
+    top: center; /* Distance from the top of the viewport */
+    right: center; /* Distance from the right of the viewport */
+    width: 500px; /* Set the width of the fixed window */
+    height: 500px; /* Set the height of the fixed window */
+    border: 5px solid #000; /* Optional: adds a border around the window */
+    overflow: hidden; /* Ensures the content does not spill out of the window */
+    padding: 10px; /* Optional: adds some space inside the window */
+    background-color: #fff; /* Optional: background color */
+}
+
+.fixed-window img {
+    width: 100%; /* Makes the image fully occupy the fixed window's width */
+    height: auto; /* Keeps the image aspect ratio intact */
+}
+
+.content {
+    margin-top: 350px; /* Just to demonstrate scrolling, adjust as needed */
+}
+
+#model-container {
+    width: 600px;
+    height: 400px;
+    margin: auto;
+}
