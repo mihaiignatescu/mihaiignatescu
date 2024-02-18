@@ -1,0 +1,140 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Model matematic pentru parametrizarea efectelor compozitionale</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        #model-container {
+            width: 600px; /* Adjusted container size */
+            height: 400px;
+            margin-top: 20px;
+        }
+        button {
+            margin: 10px; /* Adds space between buttons */
+            padding: 10px 50px; /* Makes buttons larger and easier to click */
+        }
+    </style>
+</head>
+<body>
+    <button onclick="window.location.href='02_analiza.html'">Analiza</button>
+    <button onclick="window.location.href='03_propunere.html'">Propunere</button>
+    <div id="model-container"></div>
+    <input type="number" id="heightInput" placeholder="Coming soon" />
+    <button id="enterButton">Enter</button>
+    <button id="Buton_vedere_in_plan">Vedere in plan</button>
+    <button id="Buton_vedere_frontala">Vedere frontala</button>
+    <button id="Buton_vedere_laterala">Vedere laterala</button>
+    <button id="Buton_vedere_axonometrie">Vedere in axonometrie</button>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.138.0/examples/js/controls/OrbitControls.js"></script>
+    <script>
+        var scene = new THREE.Scene();
+        // Define the boundaries of the orthographic view
+        var frustumSize = 75;
+        var aspect = 600 / 400;
+        var camera = new THREE.OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, 1, 2000);
+        // Set the camera position
+        camera.position.set(0, 0, 0); // These values can be adjusted based on your scene
+        camera.lookAt(scene.position); // Assuming you have a variable `scene` representing your Three.js scene
+
+        // var camera = new THREE.PerspectiveCamera(75, 600 / 400, 0.1, 1000);
+        var renderer = new THREE.WebGLRenderer();
+        renderer.setSize(600, 400);
+        document.getElementById('model-container').appendChild(renderer.domElement);
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+        camera.position.set(0, 0, 5);
+
+        var ambientLight = new THREE.AmbientLight(0xcccccc, 1);
+        scene.add(ambientLight);
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        directionalLight.position.set(1, 1, 1);
+        scene.add(directionalLight);
+
+        var volumeHeight = 1; // Default height
+        var volumeObject; // This will reference the specific object in the .glTF scene
+
+        document.getElementById('Buton_vedere_in_plan').addEventListener('click', function() {
+            camera.position.set(0, 0, 40); // Adjust to your desired new camera position
+            camera.lookAt(scene.position); // Make the camera look at the center of the scene
+            controls.update(); // Update the controls if necessary
+        });
+
+        document.getElementById('Buton_vedere_frontala').addEventListener('click', function() {
+            camera.position.set(40, 0, 0); // Adjust to your desired new camera position
+            camera.lookAt(scene.position); // Make the camera look at the center of the scene
+            controls.update(); // Update the controls if necessary
+        });
+
+        document.getElementById('Buton_vedere_laterala').addEventListener('click', function() {
+            camera.position.set(0, 40, 0); // Adjust to your desired new camera position
+            camera.lookAt(scene.position); // Make the camera look at the center of the scene
+            controls.update(); // Update the controls if necessary
+        });
+
+        document.getElementById('Buton_vedere_axonometrie').addEventListener('click', function() {
+            camera.position.set(40, 40, 40); // Adjust to your desired new camera position
+            camera.lookAt(scene.position); // Make the camera look at the center of the scene
+            controls.update(); // Update the controls if necessary
+        });
+
+        // Function to update the height of the volume
+        function updateHeight(newHeight) {
+            if (volumeObject) {
+                volumeObject.scale.setZ(newHeight / volumeHeight);
+                volumeHeight = newHeight; // Update the current height
+            }
+        }
+
+        // GLTF Loader to load the 3D model
+        var loader = new THREE.GLTFLoader();
+        loader.load(
+            'mymodel.gltf', // Update this with the actual path to the .glTF model
+            function (gltf) {
+                scene.add(gltf.scene);
+                // Assuming 'volumeName' is the name of the object in Blender or any 3D software you used to create the model
+                volumeObject = gltf.scene.getObjectByName('RH');
+                // Set initial scale based on the current model's height
+                volumeHeight = volumeObject.scale.z;
+
+                // Event listener for the height input field
+                document.getElementById('heightInput').addEventListener('input', function(event) {
+                    var newHeight = parseFloat(event.target.value);
+                    updateHeight(newHeight);
+                });
+            },
+            undefined,
+            function (error) {
+                console.error('An error happened', error);
+            }
+        );
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        document.getElementById('enterButton').addEventListener('click', function() {
+    var newHeight = parseFloat(document.getElementById('heightInput').value);
+    if(!isNaN(newHeight)) { // Only call updateHeight if newHeight is a number
+        updateHeight(newHeight);
+    }
+});
+
+    </script>
+</body>
+</html>
