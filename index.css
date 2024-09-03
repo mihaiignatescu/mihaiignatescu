@@ -1,0 +1,77 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-image: url('00_textura/TEXTURA.jpg'); /* Replace with the path to your texture image */
+    background-size: cover; /* Adjusts the size of the image to cover the entire background */
+    background-repeat: no-repeat; /* Ensures the texture doesn't repeat */
+    background-position: center; /* Centers the texture on the page */
+    background-attachment: scroll; /* Keeps the texture fixed when scrolling */
+    margin: 0;
+    background-color: #f4f4f4;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.container_mother {
+    background-color: none;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.container_titlu {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    margin-bottom: 50px;
+}
+
+.container_content {
+    font-size: 18px;
+    font-weight: normal;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.container_butoane {
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+.container_butoane button {
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    padding: 8px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    max-width: 250px;
+    margin: 0 auto;
+}
+.container_butoane button:hover {
+    background-color: rgb(208, 0, 0); /* Darker shade of blue on hover */
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.container_disclaimer {
+    font-size: 14px;
+    font-style: italic;
+    color: black;
+    margin-top: 50px;
+}

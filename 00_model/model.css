@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+    background-image: url('../00_textura/TEXTURA.jpg'); /* Path to the image */
+    background-size: cover; /* Adjusts the size of the image to cover the entire background */
+    background-repeat: no-repeat; /* Ensures the texture doesn't repeat */
+    background-position: center; /* Centers the texture on the page */
+    background-attachment: scroll; /* Keeps the texture fixed when scrolling */
+    margin: 0;
+    background-color: none;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.container_mother {
+    background-color: #f4f4f400;
+    padding: 20px;
+    border-radius: 5px;
+    width: 90%;
+    max-width: 500px;
+    text-align: center;
+}
+
+/* styles.css */
+#threejs-container {
+    width: 485px;
+    height: 485px; /* Ensures the container is square */
+    margin: 0 auto; /* Center the container horizontally on the page */
+    background-color: transparent; /* Light gray background to make it visible */
+    border: none; /* Optional border to outline the container */
+}
+
+
+.container_content {
+    font-size: 18px;
+    font-weight: normal;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.container_butoane_1 button {
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    padding: 8px 0px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    max-width: 52px;
+    margin-top: 20px;
+}
+.container_butoane_1 button:hover {
+    background-color: rgb(208, 0, 0); /* Darker shade of blue on hover */
+    color: white;
+    transition: background-color 0.3s ease;
+}
+
+.container_butoane_2 button {
+    background-color: transparent;
+    color: rgb(0, 0, 0);
+    padding: 8px 0px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+    max-width: 75px;
+    margin: 0px;
+}
+.container_butoane_2 button:hover {
+    background-color: rgb(208, 0, 0); /* Darker shade of blue on hover */
+    color: white;
+    transition: background-color 0.3s ease;
+}
+.container_disclaimer {
+    font-size: 14px;
+    font-style: italic;
+    color: black;
+    margin-top: 50px;
+    margin-bottom: 50px;
+}

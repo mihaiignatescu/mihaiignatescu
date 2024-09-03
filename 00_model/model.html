@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Three.js 3D Model</title>
+    <link rel="stylesheet" href="model.css">
+</head>
+<body>
+    <div class="container_mother">
+        <div id="threejs-container"></div>
+
+        <!-- Buttons for camera views -->
+        <div class="container_butoane_1">
+            <button id="Buton_toggle">Orbit</button>
+            <button id="Buton_vedere_in_plan">Plan</button>
+            <button id="Buton_vedere_frontala_nord">N</button>
+            <button id="Buton_vedere_laterala_vest">V</button>
+            <button id="Buton_vedere_laterala_sud">S</button>
+            <button id="Buton_vedere_laterala_est">E</button>
+            <button id="Buton_vedere_axonometrie_45">45°</button>
+            <button id="Buton_vedere_axonometrie_90">60°</button>
+        </div>
+
+        <div class="container_disclaimer">
+            <p id="disclaimer">Componentă a lucrării de disertație „Model matematic pentru parametrizarea efectelor compoziționale în proiectarea urbană” <br>
+                Mihai Ignătescu, Universitatea de Arhitectură și Urbanism „Ion Mincu”, septembrie 2024
+            </p>
+        </div>
+        <div class="container_butoane_2">
+            <button onclick="goBack()">înapoi</button>
+            <button onclick="window.location.href='../index.html'">acasă</button>
+        </div>
+    </div>
+
+    <!-- Include Three.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Include GLTFLoader directly -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <!-- Include OrbitControls -->
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Three.js script embedded directly in HTML -->
+    <script>
+        // Set up the scene, camera, and renderer
+        var scene = new THREE.Scene();
+        scene.background = new THREE.Color(0xffffff); // Set the background to white
+
+        var container = document.getElementById('threejs-container');
+        var width = container.offsetWidth;
+        var height = container.offsetHeight;
+        var aspect = width / height;
+
+        var frustumSize = 50;
+        var orthographicCamera = new THREE.OrthographicCamera(frustumSize * aspect / -2, frustumSize * aspect / 2, frustumSize / 2, frustumSize / -2, -100, 2000);
+        orthographicCamera.position.set(0, 0, 50);
+
+        var perspectiveCamera = new THREE.PerspectiveCamera(75, aspect, 0.1, 1000);
+        perspectiveCamera.position.set(0, 0, 50);
+
+        var camera = perspectiveCamera; // Start with the perspective camera
+
+        var renderer = new THREE.WebGLRenderer({antialias: true});
+        renderer.setSize(width, height);
+        renderer.setClearColor(0xffffff, 1); // Set clear color to white
+        container.appendChild(renderer.domElement);
+
+        renderer.shadowMap.enabled = true;
+
+        var controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enabled = true;
+
+        var ambientLight = new THREE.AmbientLight(0xcccccc, 1);
+        scene.add(ambientLight);
+
+        var directionalLight = new THREE.DirectionalLight(0xffffff, 2);
+        directionalLight.position.set(30, 30, 30);
+        directionalLight.castShadow = true;
+        scene.add(directionalLight);
+
+        // Update camera aspect ratios and projection matrices
+        orthographicCamera.aspect = aspect;
+        orthographicCamera.updateProjectionMatrix();
+        perspectiveCamera.aspect = aspect;
+        perspectiveCamera.updateProjectionMatrix();
+
+        var loader = new THREE.GLTFLoader();
+        loader.load('mymodel.gltf', function (gltf) {
+            scene.add(gltf.scene);
+        }, undefined, function (error) {
+            console.error('An error happened', error);
+        });
+
+        // Camera controls
+        document.getElementById('Buton_toggle').addEventListener('click', function() {
+            // Switch to perspective camera and enable controls for orbiting
+            camera = perspectiveCamera;
+            controls = new THREE.OrbitControls(perspectiveCamera, renderer.domElement);
+            controls.enabled = true;
+            animate();
+        });
+
+        function setFixedView(position, lookAtPosition, upDirection = {x: 0, y: 1, z: 0}) {
+            camera = orthographicCamera; // Switch to orthographic camera for fixed views
+            camera.position.set(position.x, position.y, position.z);
+            camera.lookAt(lookAtPosition.x, lookAtPosition.y, lookAtPosition.z);
+            camera.up.set(upDirection.x, upDirection.y, upDirection.z); // Set the camera's up direction
+            camera.updateProjectionMatrix(); // Important after changing camera properties
+            controls.dispose(); // Dispose current controls
+            controls = new THREE.OrbitControls(orthographicCamera, renderer.domElement); // Reinitialize controls for the orthographic camera
+            controls.enabled = false; // Disable controls to prevent orbiting in fixed views
+            animate();
+        }
+
+        document.getElementById('Buton_vedere_in_plan').addEventListener('click', function() {
+            setFixedView({x: 0, y: 0, z: 100}, scene.position, {x: 0, y: 1, z: 0});
+        });
+
+        document.getElementById('Buton_vedere_frontala_nord').addEventListener('click', function() {
+            setFixedView({x: 0, y: 100, z: 0}, scene.position, {x: 0, y: 0, z: 1});
+        });
+
+        document.getElementById('Buton_vedere_laterala_vest').addEventListener('click', function() {
+            setFixedView({x: -100, y: 0, z: 0}, scene.position, {x: 0, y: 0, z: 1});
+        });
+
+        document.getElementById('Buton_vedere_laterala_sud').addEventListener('click', function() {
+            setFixedView({x: 0, y: -100, z: 0}, scene.position, {x: 0, y: 0, z: 1});
+        });
+
+        document.getElementById('Buton_vedere_laterala_est').addEventListener('click', function() {
+            setFixedView({x: 100, y: 0, z: 0}, scene.position, {x: 0, y: 0, z: 1});
+        });
+
+        document.getElementById('Buton_vedere_axonometrie_45').addEventListener('click', function() {
+            setFixedView({x: 30, y: 30, z: 30}, scene.position, {x: 0, y: 0, z: 1});
+        });
+
+        document.getElementById('Buton_vedere_axonometrie_90').addEventListener('click', function() {
+            setFixedView({x: 100, y: 100, z: 100 * Math.sqrt(3)}, scene.position, {x: 0, y: 0, z: 1});
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            controls.update();
+            renderer.render(scene, camera); // Use the active camera
+        }
+        animate();
+
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+    </script>
+    <script>
+        function goToIndex() {
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

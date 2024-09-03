@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../efecte.css">
+    <script src="P_SD.js"></script>
+</head>
+<body>
+    <div class="container_mother">
+
+        <div class="container_titlu">
+            <a id="titlu_disertatie" href="../../lucrare_disertatie.pdf" target="_blank">
+                MODEL MATEMATIC PENTRU PARAMETRIZAREA EFECTELOR COMPOZIȚIONALE ÎN PROIECTAREA URBANĂ
+            </a>
+        </div>
+
+        <div class="container_content">
+            <p id="descriere">Completează câmpurile de mai jos:
+            </p>
+        </div>
+
+        <fieldset class="input-fieldset">
+            <div><input id="HR" type="number" placeholder="HR - Înălțimea frontului de referință"></div>
+            <div><input id="LS" type="number" placeholder="LS - Lățimea spațiului liber"></div>
+        </fieldset>
+
+        <div class="container_butoane_1">
+            <button id="GENEREAZĂ" onclick="generateOutput()">GENEREAZĂ</button>
+            <button id="VIZUALIZEAZĂ" onclick="window.location.href='../../00_model/model.html'">VIZUALIZEAZĂ</button>
+        </div>
+        
+        <fieldset class="output-fieldset">
+            <div id="outputArea"></div>
+        </fieldset>
+
+        <div id="text_ajutator">Dacă nu cunoști LS, completează HR și apasă „generează” <br> Acum poți completa LS cu o valoare din interval <br> Dacă cunoști LS, introdu valoarea direct<br></div>
+
+        <div class="container_disclaimer">
+            <p id="disclaimer">Componentă a lucrării de disertație „Model matematic pentru parametrizarea efectelor compoziționale în proiectarea urbană” <br>
+                Mihai Ignătescu, Universitatea de Arhitectură și Urbanism „Ion Mincu”, septembrie 2024
+            </p>
+    
+        </div>
+        <div class="container_butoane_2">
+            <button onclick="goBack()">înapoi</button>
+            <button id="CLEAR" class="container_butoane_2" onclick="clearOutput()">șterge</button>
+            <button onclick="window.location.href='../../index.html'">acasă</button>
+        </div>
+    <script>
+        function generateOutput() {
+            const HR = parseFloat(document.getElementById('HR').value);
+            const LS = parseFloat(document.getElementById('LS').value);
+
+            evaluateInterval(HR, LS); // Call the function from P_RH.js
+
+            document.querySelector('.output-fieldset').classList.remove('hidden-content');
+            document.querySelector('.output-fieldset').classList.add('visible-content');
+        }
+
+        function clearOutput() {
+            // Clear the content inside the output area
+            document.getElementById('outputArea').innerHTML = "";
+
+            // Hide the content inside the output fieldset
+            document.querySelector('.output-fieldset').classList.remove('visible-content');
+            document.querySelector('.output-fieldset').classList.add('hidden-content');
+
+            // Clear all input fields
+            document.getElementById('HR').value = "";
+            document.getElementById('LS').value = "";
+        }
+    </script>
+
+    <script>
+        function goBack() {
+            window.history.back();
+        }
+        </script>
+    <script>
+        function goToIndex() {
+            window.location.href = 'index.html';
+        }
+    </script>
+
+
+    </div>
+</body>
+</html>
